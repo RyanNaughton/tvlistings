@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  program: MyString
+  station: 1
+  time: MyString
+  duration: MyString
+
+two:
+  program: MyString
+  station: 1
+  time: MyString
+  duration: MyString

@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  uniqueID: 1
+  name: MyString
+  fcc: 1
+  affiliate: MyString
+
+two:
+  uniqueID: 1
+  name: MyString
+  fcc: 1
+  affiliate: MyString

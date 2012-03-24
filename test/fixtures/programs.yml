@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  uniqueID: MyString
+  title: MyString
+  subtitle: MyString
+  description: MyString
+  showType: MyString
+  seriesID: MyString
+  originalAirDate: 2012-01-30
+
+two:
+  uniqueID: MyString
+  title: MyString
+  subtitle: MyString
+  description: MyString
+  showType: MyString
+  seriesID: MyString
+  originalAirDate: 2012-01-30
