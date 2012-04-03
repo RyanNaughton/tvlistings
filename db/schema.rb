@@ -11,12 +11,20 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120131030006) do
+ActiveRecord::Schema.define(:version => 20120403001259) do
 
   create_table "lineups", :force => true do |t|
     t.integer  "station_id"
     t.integer  "channel"
     t.integer  "channelMinor"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "posts", :force => true do |t|
+    t.string   "name"
+    t.string   "title"
+    t.text     "content"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -34,12 +42,14 @@ ActiveRecord::Schema.define(:version => 20120131030006) do
   end
 
   create_table "schedules", :force => true do |t|
-    t.string   "program"
-    t.integer  "station"
-    t.string   "time"
-    t.string   "duration"
+    t.string   "program_unique_id"
+    t.integer  "station_unique_id"
+    t.integer  "duration",          :limit => 255
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "show_time"
+    t.integer  "program_id"
+    t.integer  "station_id"
   end
 
   create_table "stations", :force => true do |t|
@@ -50,5 +60,23 @@ ActiveRecord::Schema.define(:version => 20120131030006) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "users", :force => true do |t|
+    t.string   "email",                  :default => "", :null => false
+    t.string   "encrypted_password",     :default => "", :null => false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          :default => 0
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+  add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
 end

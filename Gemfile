@@ -19,9 +19,13 @@ end
 gem 'jquery-rails'
 gem 'httpclient'
 gem 'therubyracer'
+gem 'devise'
 
 gem 'resque'
 gem 'resque-scheduler'
+
+gem 'sunspot_rails'
+gem 'sunspot_solr'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

@@ -2,7 +2,7 @@ module TvListingsPuller
 
   require 'httpclient'
 
-  User = 'ryanjnaughton'
+  User = 'testaccount411'
   Pswd = 'secret'
   TMSWebService = 'http://webservices.schedulesdirect.tmsdatadirect.com/schedulesdirect/tvlistings/xtvdService'
   ZULU_FORMAT = '%Y-%m-%dT%H:%M:%SZ'
@@ -27,18 +27,23 @@ tms_SOAP = <<__EOX__
 </SOAP-ENV:Envelope>
 __EOX__
 
-  tms_client = HTTPClient.new
-  tms_client.set_auth(TMSWebService, User, Pswd)
+    tms_client = HTTPClient.new
+    tms_client.set_auth(TMSWebService, User, Pswd)
 
-  chunk = tms_client.post_content(TMSWebService, tms_SOAP)
-  hash = Hash.from_xml chunk
-  hash["Envelope"]["Body"]["downloadResponse"]["xtvdResponse"]["xtvd"].select {|k,v| v.class==Hash}
-
+    chunk = tms_client.post_content(TMSWebService, tms_SOAP)
+    hash = Hash.from_xml chunk
+    listings = hash["Envelope"]["Body"]["downloadResponse"]["xtvdResponse"]["xtvd"].select {|k,v| v.class==Hash}
+    listings["schedules"]["schedule"].each do |schedule|
+      Schedule.create(:program_unique_id => schedule["program"], :station_unique_id => schedule["station"].to_i, :show_time => DateTime.strptime(schedule["time"], ZULU_FORMAT))
+    end
+    listings["programs"]["program"].each do |program|
+      program = Program.create(:uniqueID => program["id"], :title =>  program["title"], :subtitle =>  program["subtitle"], :description =>  program["description"], :showType => program["showType"], :seriesID =>  program["series"]) #, :originalAirDate => Date.strptime(program["originalAirDate"], '%Y-%m-%d'))
+      program.schedules = Schedule.find_all_by_program_unique_id(program.uniqueID)
+    end
+    listings["stations"]["station"].each do |station|
+      station = Station.create(:uniqueID => station["id"], :name => station["name"])
+      station.schedules = Schedule.find_all_by_station_unique_id(station.uniqueID)
+    end
+    
   end
-
-#y["Envelope"]["Body"]["downloadResponse"]["xtvdResponse"]["xtvd"]["schedules"]["schedule"]
-#y["Envelope"]["Body"]["downloadResponse"]["xtvdResponse"]["xtvd"]["programs"]["program"]
-#y["Envelope"]["Body"]["downloadResponse"]["xtvdResponse"]["xtvd"]["productionCrew"]["crew"]
-#y["Envelope"]["Body"]["downloadResponse"]["xtvdResponse"]["xtvd"]["genres"]["programGenre"]
-
 end
